@@ -1,0 +1,63 @@
+name: Publish Debug APK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'apk-distribution/app-debug.apk'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify APK and Checksum
+        run: |
+          echo "Verifying APK existence and size..."
+          test -f apk-distribution/app-debug.apk
+          APK_SIZE=$(du -h apk-distribution/app-debug.apk | cut -f1)
+          echo "APK Size: $APK_SIZE"
+
+          echo "Verifying checksum file..."
+          test -f apk-distribution/app-debug.apk.sha256
+          sha256sum -c apk-distribution/app-debug.apk.sha256
+
+          echo "Verifying APK zip structure..."
+          unzip -tq apk-distribution/app-debug.apk
+
+      - name: Create GitHub Release and Upload APK
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="debug-apk-build-${{ github.run_number }}-${{ github.run_attempt }}"
+          echo "Creating GitHub Release with tag: $TAG"
+
+          gh release create "$TAG" \
+            --title "Progress Bank Debug APK ($TAG)" \
+            --notes "Automated build and release of Progress Bank debug APK compiled inside Google AI Studio." \
+            --latest \
+            apk-distribution/app-debug.apk
+
+          echo "Release created and APK uploaded successfully as latest."
+
+      - name: Generate Job Summary
+        run: |
+          TAG="debug-apk-build-${{ github.run_number }}-${{ github.run_attempt }}"
+          APK_SIZE=$(du -h apk-distribution/app-debug.apk | cut -f1)
+          CHECKSUM=$(sha256sum apk-distribution/app-debug.apk | awk '{print $1}')
+          REPO="${{ github.repository }}"
+
+          echo "### 🚀 APK Published Successfully" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release Tag:** \`$TAG\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK Size:** \`$APK_SIZE\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **SHA-256 Checksum:** \`$CHECKSUM\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release Page:** https://github.com/$REPO/releases/tag/$TAG" >> $GITHUB_STEP_SUMMARY
+          echo "- **Direct Download URL (Latest):** https://github.com/$REPO/releases/latest/download/app-debug.apk" >> $GITHUB_STEP_SUMMARY
