@@ -1,5 +1,5 @@
 {
-  "name": "Progress Bank",
+  "name": "BlueprintVault",
   "description": "Personal smart notebook for app-building blueprints with instant recall and milestone tracking.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

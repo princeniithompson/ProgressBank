@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Progress Bank</string>
+    <string name="app_name">BlueprintVault</string>
     <string name="tab_ask">Ask</string>
     <string name="tab_new_progress">New Progress</string>
     <string name="ask_hero_title">Ask how you solved something</string>

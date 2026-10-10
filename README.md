@@ -1,6 +1,6 @@
-# Progress Bank
+# BlueprintVault
 
-Progress Bank is a native Android application built with Jetpack Compose and Material 3 Expressive, designed as a personal smart notebook for app-building blueprints (saved architectural patterns, text injection, audio session lifecycles, low-latency haptics, offline CRDT synchronization, etc.).
+BlueprintVault is a native Android application built with Jetpack Compose and Material 3 Expressive, designed as a personal smart notebook for app-building blueprints (saved architectural patterns, text injection, audio session lifecycles, low-latency haptics, offline CRDT synchronization, etc.).
 
 ## Visual Design & Signature Look
 - **Palette**: Deep navy & indigo brand tokens (`#0F1E2C`), light lavender-tinted surfaces (`#FEF7FF`), clean slate containers (`#CEE2F6`).
